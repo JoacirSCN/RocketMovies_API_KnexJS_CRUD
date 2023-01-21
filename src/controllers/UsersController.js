@@ -11,10 +11,8 @@ class UsersController {
     //Selecionar todos os usuários onde o email é igual ao email do req.body
     const checkEmailExists = await knex('users').select('*').where({email});
 
-    if(checkEmailExists[0] != undefined){
-      if(checkEmailExists[0].email === email){
-        throw new AppError('Este e-mail já está em uso.');;
-      }
+    if(checkEmailExists.length > 0){
+      throw new AppError('Este e-mail já está em uso.');;
     }
     
     await knex("users").insert({
@@ -30,13 +28,14 @@ class UsersController {
     const { name, email, password, old_password } = req.body;
     const { id } = req.params;
 
-    const user = await knex('users').select('*').where('id', id);
+    const user = await knex('users').select('*').where({id});
+    console.log(user)
 
-    if(user[0] === undefined) {
+    if(user.length === 0) {
       throw new AppError('Usuário não encontrado.');
     }
 
-    const userWithUpdatedEmail = await knex('users').select('*').where('email', email)
+    const userWithUpdatedEmail = await knex('users').select('*').where({email})
 
     if(userWithUpdatedEmail[0] && userWithUpdatedEmail[0].id !== user[0].id) {
       throw new AppError('Este e-mail já está em uso.');
