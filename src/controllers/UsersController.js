@@ -54,14 +54,21 @@ class UsersController {
         throw new AppError('A senha antiga não confere.');
       }
 
-      user.password = await hash(password, 8);
+      user[0].password = await hash(password, 8);
     }
 
     await knex("users").where({id}).update({
       name: user[0].name,
       email: user[0].email,
       password: user[0].password,
-      updated_at: new Date()
+      updated_at: new Intl.DateTimeFormat('pt-br', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      }).format(new Date())
     })
 
     res.status(201).json();

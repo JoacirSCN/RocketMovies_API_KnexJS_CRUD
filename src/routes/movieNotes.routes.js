@@ -5,7 +5,7 @@ const movieNotesController = new MovieNotesController();
 
 const movieNotes = Router();
 
-movieNotes.get('/', movieNotesController.index);// quando eu recebo pela query(insominia), não preciso passar o user_id aqui
+movieNotes.get('/', movieNotesController.index);// quando eu recebo o user_id pela query(insominia), não preciso passar aqui
 movieNotes.post('/:user_id', movieNotesController.create);
 movieNotes.get('/:id', movieNotesController.show);
 movieNotes.delete('/:id', movieNotesController.delete);
