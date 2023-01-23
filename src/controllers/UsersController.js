@@ -29,7 +29,6 @@ class UsersController {
     const { id } = req.params;
 
     const user = await knex('users').select('*').where({id});
-    console.log(user)
 
     if(user.length === 0) {
       throw new AppError('Usuário não encontrado.');
@@ -59,9 +58,9 @@ class UsersController {
     }
 
     await knex("users").where({id}).update({
-      name: user.name,
-      email: user.email,
-      password: user.password,
+      name: user[0].name,
+      email: user[0].email,
+      password: user[0].password,
       updated_at: new Date()
     })
 
